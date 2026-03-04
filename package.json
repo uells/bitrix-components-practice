@@ -1,0 +1,27 @@
+{
+  "name": "bitrix-components",
+  "version": "1.0.0",
+  "description": "Привет! В данном репозитории будут представлены мои кастомные компоненты в `1С-Bitrix`",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start:tw-iblock.tree": "npx @tailwindcss/cli -i ./local/components/practice/02.iblock.tree/templates/.default/input.css -o ./local/components/practice/02.iblock.tree/templates/.default/style.css --watch" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uells/bitrix-components-practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uells/bitrix-components-practice/issues"
+  },
+  "homepage": "https://github.com/uells/bitrix-components-practice#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.2.1",
+    "tailwindcss": "^4.2.1"
+  }
+}
