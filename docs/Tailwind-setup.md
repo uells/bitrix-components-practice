@@ -2,16 +2,17 @@
 
 Tailwind CSS работает путем сканирования всех ваших файлов HTML, компонентов JavaScript и любых других шаблонов на предмет имен классов, создания соответствующих стилей и последующей записи их в статический файл CSS.
 
-## 1) Установка Tailwind v4 через CLI
+## Установка Tailwind v3
+### 1) Установка (CLI)
 
 В корне репозитория:
 
 ```bash
 npm init -y
-npm install tailwindcss @tailwindcss/cli
+npm i -D tailwindcss
 ```
 
-## 2) После установки появится файл `tailwind.config.js`
+### 2) После установки появится файл `tailwind.config.js`
 Пример настроенной конфигурации:
 
 ```js
@@ -79,7 +80,7 @@ module.exports = {
 };
 ```
 
-## 3) Создать главный css файл input.css и добавить в него tw-директивы
+### 3) Создать главный css файл input.css и добавить в него tw-директивы
 `input.css`
 ```css
 @tailwind base;
@@ -96,9 +97,9 @@ module.exports = {
 **@tailwind utilities**
 Основной слой Tailwind, содержащий utility-классы. Именно здесь генерируются классы для отступов, размеров, цветов, типографики, flex/grid, позиционирования, адаптивности (`sm:`, `md:`, `lg:`) и других утилитарных стилей.
 
-## 4) Запустить процесс tailwind
+### 4) Запустить процесс tailwind
 ```bash
-npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+npx tailwindcss -i ./src/input.css -o ./src/output.css --watch
 ```
 Не забываем поключить сгенерированные стили в html
 ```html
@@ -117,7 +118,7 @@ npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
 </html>
 ```
 
-## 5) Чтобы не вводить эту команду постоянно настроим `package.json`
+### 5) Чтобы не вводить эту команду постоянно настроим `package.json`
 `package.json`
 ```json
 {
@@ -126,7 +127,7 @@ npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
     "description": "",
     "main": "tailwind.config.js",
     "scripts": {
-        "start": "@tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch" // Указываем необходимую команду
+        "start": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch" // Указываем необходимую команду
     },
     "keywords": [],
     "author": "",
@@ -144,5 +145,99 @@ npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
 ```bash
 npx run start
 ```
+
+## Установка tailwind v4
+
+Tailwind v4 генерирует CSS через CLI: сканирует файлы, где встречаются классы, и пишет результат в статический CSS.
+
+### 1) Установка
+
+В корне репозитория:
+
+```bash
+npm init -y
+npm install tailwindcss @tailwindcss/cli
+```
+
+### 2) Создать входной файл Tailwind
+
+Создай файл:
+
+`src/input.css`
+
+```css
+@import "tailwindcss";
+
+/* где искать классы */
+@source "../reg/**/*.php";
+
+/* Включаем dark:* по наличию .dark выше по дереву */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* дизайн-токены (v4) */
+@theme {
+  /* breakpoints -> варианты sm:, md:, ... */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-xxl: 1400px;
+
+  /* fonts -> утилиты font-dmSans, font-body, ... */
+  --font-dmSans: "DM Sans", sans-serif;
+  --font-clashDisplay: "Clash Display", sans-serif;
+  --font-raleway: "Raleway", sans-serif;
+  --font-spaceGrotesk: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* colors -> утилиты bg-colorCodGray, text-colorOrangyRed, ... */
+  --color-colorCodGray: #191919;
+  --color-colorOrangyRed: #FE330A;
+  --color-colorLinenRuffle: #EFEAE3;
+  --color-colorViolet: #321CA4;
+  --color-colorGreen: #39FF14;
+}
+```
+
+### 3) Сборка CSS через CLI
+
+**Режим watch (для разработки)**
+
+```bash
+npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch
+```
+
+**Разовая сборка (для коммита/прод)**
+
+```bash
+npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --minify
+```
+
+
+### 4) Подключение сгенерированного CSS
+```html
+<link rel="stylesheet" href="./src/output.css">
+```
+
+### 5) Чтобы не вводить команду каждый раз — scripts в `package.json`
+
+В `package.json` добавь:
+
+```json
+{
+  "scripts": {
+    "tw:watch": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch",
+    "tw:build": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --minify"
+  }
+}
+```
+
+Запуск:
+
+```bash
+npm run tw:watch
+```
+
+
 
 
