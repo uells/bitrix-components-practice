@@ -33,3 +33,7 @@ build/
 # --- Logs / temp ---
 *.log
 *.tmp
+
+# examples
+
+example
