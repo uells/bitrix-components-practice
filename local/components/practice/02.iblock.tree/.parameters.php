@@ -144,6 +144,19 @@ $arComponentParameters = [
             "ADDITIONAL_VALUES" => "Y"
         ],
 
+        // Коды свойств привязок
+        "MIDDLE_TO_ROOT_PROPERTY_CODE" => [
+            "PARENT" => "DATA_SOURCE",
+            "NAME" => GetMessage("MIDDLE_TO_ROOT_PROPERRTY_CODE_DESC"),
+            "TYPE" => "LIST"
+        ],
+
+        "TOP_TO_MIDDLE_PROPERTY_CODE" => [
+            "PARENT" => "DATA_SOURCE",
+            "NAME" => GetMessage("TOP_TO_MIDDLE_PROPERTY_CODE_DESC"),
+            "TYPE" => "LIST"
+        ]
+
         // кеш
         "CACHE_TIME" => [
             "DEFAULT" => 360000
