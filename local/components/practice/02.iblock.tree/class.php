@@ -4,6 +4,24 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 use Bitrix\Main\Loader;
 
 const LIMIT = 100;
+const FIELDS = [
+    "IBLOCK_ID",
+    "ID",
+    "CODE",
+    "NAME",
+    "IBLOCK_SECTION_ID",
+    "ACTIVE",
+    "ACTIVE_FROM",
+    "ACTIVE_TO",
+    "PREVIEW_PICTURE",
+    "PREVIEW_TEXT",
+    "DETAIL_PICTURE",
+    "DETAIL_TEXT",
+    "DETAIL_PAGE_URL",
+    "LIST_PAGE_URL",
+    "DATE_CREATE",
+    "TIMESTAMP_X"
+];
 
 class IBlockTreeComponent extends CBitrixComponent
 {
@@ -34,20 +52,26 @@ class IBlockTreeComponent extends CBitrixComponent
     {
         if (!Loader::includeModule('iblock')) return;
 
+        
         $this->includeComponentTemlate();
     }
 
+    // Функция записи данных в переменную arResult
     private function initResult(): void
     {
         if ($rootId = (int)$this->arParams["ROOT_IBLOCK_ID"]) {
-            $rootElement = $this->getElementsFromIBlock(
-                ["SORT" => "ASC"],
-                ["IBLOCK_ID" => $rootId],
+            $selectedProps = $this->arParams["ROOT_PROPERTY_CODE"];
+            $filter = ["IBLOCK_ID" => $rootId];
+            $rootElements = $this->getElementsFromIBlock(
+                $filter,
+                $selectedProps,
                 $rootId
             );
+            $this->arResult = $rootElements;
         }
     }
 
+    // Функция получения элементов по фильтру с выбранными свойствами
     private function getElementsFromIBlock(array $filter, array $select, int $iblockId): array
     {
         // Получение элементов по фильтру
@@ -55,7 +79,8 @@ class IBlockTreeComponent extends CBitrixComponent
             ["SORT" => "ASC"],
             $filter,
             false,
-            ["nTopCount" => LIMIT] // Ограничиваемся пока что предустановленным лимитом
+            ["nTopCount" => LIMIT], // Ограничиваемся пока что предустановленным лимитом
+            FIELDS // Выбор полей
         );
 
         $elements = [];
