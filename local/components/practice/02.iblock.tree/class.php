@@ -50,10 +50,19 @@ class IBlockTreeComponent extends CBitrixComponent
 
     public function executeComponent()
     {
-        if (!Loader::includeModule('iblock')) return;
+        if ($this->startResultCache()) {
+            if (!Loader::includeModule('iblock')) return;
+            $this->initResult();
 
-        
-        $this->includeComponentTemlate();
+            if (empty($this->arResult)) {
+                $this->abortResultCache();
+                ShowError(GetMessage("ERR_NOT_FOUD_DESC"));
+
+                return;
+            }
+
+            $this->includeComponentTemlate();
+        } 
     }
 
     // Функция записи данных в переменную arResult
@@ -67,7 +76,7 @@ class IBlockTreeComponent extends CBitrixComponent
                 $selectedProps,
                 $rootId
             );
-            $this->arResult = $rootElements;
+            $this->arResult["ITEMS"] = $rootElements;
         }
     }
 
